@@ -16,10 +16,11 @@ readonly version=$major_version.$base_sublevel.$stable_update-$baserelease
 
 # default to git branch
 readonly branch=${1:-$(git rev-parse --abbrev-ref HEAD)}
+readonly commit_sha=$(git rev-parse --short HEAD)
 readonly release=${branch#f}
 
 chroot=fedora-$release-x86_64
 project=linux-kernel-ck
-filename=kernel-$version.fc$release.src.rpm
+filename=kernel-$version.$commit_sha.fc$release.src.rpm
 
 copr-cli build --chroot $chroot --nowait $project $filename
