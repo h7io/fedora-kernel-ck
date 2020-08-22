@@ -1,3 +1,6 @@
 [submodule "kernel_ck_patch"]
 	path = kernel_ck_patch
 	url = git@github.com:h7io/linux-kernel-ck-patch.git
+[submodule "kernel"]
+	path = kernel
+	url = https://src.fedoraproject.org/rpms/kernel.git
