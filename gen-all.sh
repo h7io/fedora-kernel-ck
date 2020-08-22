@@ -22,7 +22,7 @@ git checkout $branch
 git pull
 
 readonly date=$(date +'%a %b %d %Y')
-readonly author='George Sapkin <george@sapk.in>'
+readonly author='Tadas Giniotis <mail@copper.lt>'
 
 readonly major_version=$(grep '%define rpmversion' $spec_file | head -n 1 | awk '{print $3}' | tr '.' '\n' | head -1)
 readonly base_sublevel=$(grep '%define base_sublevel' $spec_file | awk '{print $NF}')
@@ -32,7 +32,7 @@ readonly baserelease=$(($(grep '%global baserelease' $spec_file | awk '{print $N
 readonly version=$major_version.$base_sublevel.$stable_update-$baserelease
 
 readonly changelog_main="$date $author - $version"
-readonly changelog_entry="* $changelog_main.local\n- Added architecture-specific GCC optimizaions\n"
+readonly changelog_entry="* $changelog_main.local\n- Applying kernel patch by Con Kolivas\n"
 
 readonly end_of_patches='# END OF PATCH DEFINITIONS'
 readonly gcc_patch="# GCC optimizations\nPatch999: $patchfilename\n"
@@ -72,16 +72,8 @@ readonly archs=(\
     "skylake"\
     )
 
-for arch in "${archs[@]}"; do
-    hi_arch=$(echo $arch | tr '[:lower:]' '[:upper:]')
+sed -i "s/^\*.*$author.*/\* $changelog_main/" $spec_file
 
-    echo Generating $arch source RPM...
-    echo CONFIG_M$hi_arch=y > config-local
+fedpkg srpm
 
-    sed -i "s/^%define buildid.*/%define buildid .$arch/" $spec_file
-    sed -i "s/^\*.*$author.*/\* $changelog_main\.$arch/" $spec_file
-
-    fedpkg srpm
-
-    echo
-done
+echo
