@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-readonly branch=${1:-f24}
+readonly branch=${1:-f32}
 
 readonly patchfilepath=$(ls kernel_ck_patch/*.patch)
 readonly patchfilename=${patchfilepath#kernel_ck_patch/}
